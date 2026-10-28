@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>html,body{margin:0;height:100%;background:#05060d}main.stage{position:absolute;inset:0}</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.js"}}</script>
+</head><body>
+<script>window.__errs=[];addEventListener("error",e=>{window.__errs.push(String(e.message));document.title="ERR:"+e.message;});addEventListener("unhandledrejection",e=>{window.__errs.push(String(e.reason));document.title="REJ:"+e.reason;});</script>
+<main class="stage"><canvas id="scene"></canvas></main>
+<script type="module">
+import { Stage } from '/js/scene/scene.js';
+const stage = new Stage(document.getElementById('scene'));
+const now = Date.now();
+const times = { 4: 10400, 3: 11000, 2: 11600, 1: 12100, 5: 12700, 6: 13300 };
+stage.syncRound({
+  id: 'fx-2', phase: 'result', number: 1,
+  bettingEndsAt: now - 30000, raceEndsAt: now - 1500, resultEndsAt: now + 120000,
+  winner: 4, order: [4, 3, 2, 1, 5, 6], times,
+}, now);
+let last = performance.now();
+function frame(t) {
+  const dt = Math.min(0.05, (t - last) / 1000);
+  last = t;
+  stage.render(Date.now(), dt);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body></html>

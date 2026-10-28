@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Retra · At Yarışı</title>
+    <meta
+      name="description"
+      content="3D hipodromda canlı at yarışı: 20 saniyede bahis, 6 at, gerçek zamanlı sonuçlar."
+    />
+    <meta name="theme-color" content="#06070e" />
+    <!-- Oyunun kendi görseli: sekme simgesi + ana ekran simgesi -->
+    <link rel="icon" type="image/png" href="./assets/atyarisi.png" />
+    <link rel="apple-touch-icon" href="./assets/atyarisi.png" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.169.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="app">
+      <main class="stage" id="stage">
+        <canvas id="scene" aria-label="3D yarış pisti"></canvas>
+
+        <div class="stage-top">
+          <span class="pill" id="phase-pill">Bahisler açık</span>
+          <div class="stage-right">
+            <span class="pill ghost" id="round-pill">Tur hazırlanıyor…</span>
+            <!-- Bu turda **oynayan** kişiler: avatarları canlı görünür. -->
+            <div class="players" id="players" aria-label="Bu turdaki oyuncular"></div>
+          </div>
+        </div>
+
+        <div class="countdown" id="countdown" aria-live="off"></div>
+
+        <div class="stage-foot">
+          <span class="hint" id="stage-hint">Tutar seç, atın kartına dokun.</span>
+          <span class="leader" id="leader" hidden>
+            <span class="leader-dot" aria-hidden="true"></span>
+            <span id="leader-text">—</span>
+          </span>
+        </div>
+</main>
+
+      <!-- Yarış/sonuç fazında: bahis paneli gizlenir, hipodrom büyür ve
+           kazananlar kartı buraya gelir. Sonuç bitince her şey geri gelir. -->
+      <section class="result-panel" id="results" hidden></section>
+
+      <section class="betting" aria-label="Bahis paneli">
+        <!-- Bahis miktarları: kaydırılabilir tek satır (UEFA ile aynı tutarlar) -->
+        <div class="betting-head">
+          <div class="stakes" id="stakes" role="group" aria-label="Bahis tutarı"></div>
+          <div class="betting-total">
+            <span>Bu tur</span>
+            <b id="round-total">0</b>
+            <img class="coin-icon coin-xs" src="./assets/kristal.png" alt="kristal" />
+          </div>
+        </div>
+
+        <!-- Kristallerim: bahis miktarlarının hemen altında, tek satır -->
+        <button class="wallet-row" id="wallet" type="button" title="Kristal bakiyen">
+          <span class="wallet-label">Kristallerim</span>
+          <img class="coin-icon coin-sm" src="./assets/kristal.png" alt="kristal" />
+          <b class="wallet-value" id="balance">0</b>
+        </button>
+
+        <div class="cards" id="cards" role="group" aria-label="At kartları"></div>
+
+        <div class="history">
+          <div class="history-head">
+            <span>Geçmiş yarış sonuçları</span>
+            <small>son 10 tur</small>
+          </div>
+          <div class="history-row" id="history" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- Bağlantı durumu artık üst barda değil; HUD kodu için gizli tutulur. -->
+      <span class="chip connection-hidden" id="connection" hidden>
+        <i class="dot" aria-hidden="true"></i>
+        <span id="connection-label">Demo</span>
+      </span>
+    </div>
+
+    <!-- Açılış katmanı: hipodrom arkada gizlice kurulurken yalnız oyun
+         görseli, "Oyun yükleniyor" ve dolan çubuk görünür. -->
+    <div class="boot" id="stage-loading">
+      <div class="boot-inner">
+        <img class="boot-icon" src="./assets/atyarisi.png" alt="At Yarışı" />
+        <div class="boot-title" id="boot-title">Oyun yükleniyor</div>
+        <div
+          class="boot-bar"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          id="boot-progress"
+        >
+          <i id="boot-fill"></i>
+        </div>
+        <div class="boot-note" id="boot-note"></div>
+      </div>
+    </div>
+
+    <div class="login" id="login" hidden></div>
+    <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <noscript>
+      <p style="padding: 24px; color: #fff; font-family: system-ui">
+        Bu oyun için JavaScript gerekir.
+      </p>
+    </noscript>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
